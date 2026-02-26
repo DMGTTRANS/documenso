@@ -1,11 +1,11 @@
 import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 
 export const appMetaTags = (title?: string) => {
-  const description = 'Clinsmart - Clínicas inteligentes';
+  const description = 'Assinatura Eletrônica';
 
   return [
     {
-      title: title ? `${title} - Clinsmart` : 'Clinsmart',
+      title: title ? `${title} - DMGTTRANS` : 'DMGTTRANS',
     },
     {
       name: 'description',
@@ -13,11 +13,11 @@ export const appMetaTags = (title?: string) => {
     },
     {
       name: 'keywords',
-      content: 'Clinsmart, Assinar documentos, Assinatura digital, Assinatura eletrônica, clinicas',
+      content: '',
     },
     {
       name: 'author',
-      content: 'Clinsmart',
+      content: 'DMGTTRANS',
     },
     {
       name: 'robots',
@@ -25,7 +25,7 @@ export const appMetaTags = (title?: string) => {
     },
     {
       property: 'og:title',
-      content: 'Clinsmart - Assinatura Eletrônica de Documentos',
+      content: 'DMGTTRANS',
     },
     {
       property: 'og:description',
