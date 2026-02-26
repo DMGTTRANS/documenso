@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -229,6 +229,25 @@ export const DocumentSigningSignatureField = ({
 
     return () => resizeObserver.disconnect();
   }, [signature?.typedSignature]);
+
+  // --- INÍCIO DO HACK DE AUTO-ABRIR DO QUIOSQUE ---
+  const hasAutoOpened = useRef(false);
+
+  useEffect(() => {
+    // Se o campo estiver vazio, não tiver assinatura prévia e ainda não tentamos abrir...
+    if (state === 'empty' && !providedSignature && !hasAutoOpened.current) {
+      hasAutoOpened.current = true; // Marca que já abrimos para não prender o cidadão num loop
+
+      // Espera meio segundo (500ms) para garantir que o PDF no fundo já carregou lisinho
+      const timer = setTimeout(() => {
+        setShowSignatureModal(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [state, providedSignature]);
+
+  // --- FIM DO HACK ---
 
   return (
     <DocumentSigningFieldContainer
