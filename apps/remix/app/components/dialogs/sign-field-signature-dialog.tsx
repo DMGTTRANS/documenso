@@ -39,7 +39,10 @@ export const SignFieldSignatureDialog = createCallable<
 
     return (
       <Dialog open={true} onOpenChange={(value) => (!value ? call.end(null) : null)}>
-        <DialogContent position="center">
+        <DialogContent
+          position="center"
+          className="m-0 flex h-screen w-screen max-w-none flex-col justify-center rounded-none border-none bg-background/95 backdrop-blur-sm sm:max-w-none"
+        >
           <div>
             <DialogHeader>
               <DialogTitle>

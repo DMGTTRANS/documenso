@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
 import {
@@ -529,6 +529,62 @@ export default function EnvelopeSignerPageRenderer() {
     pageLayer.current.batchDraw();
   }, [selectedAssistantRecipient]);
 
+  // --- INÍCIO DO HACK DE AUTO-ABRIR DO QUIOSQUE ---
+  const hasAutoOpened = useRef(false);
+
+  useEffect(() => {
+    // Se já abrimos a janela ou se os campos ainda não carregaram, ignora.
+    if (hasAutoOpened.current || localPageFields.length === 0) return;
+
+    // Procura o primeiro campo de assinatura que ainda NÃO foi assinado
+    const unsignedSignatureField = localPageFields.find(
+      (f) => f.type === FieldType.SIGNATURE && !f.inserted,
+    );
+
+    if (unsignedSignatureField) {
+      hasAutoOpened.current = true; // Marca como aberto para não travar o cidadão num loop infinito
+
+      // Espera 800 milissegundos para o PDF terminar de piscar na tela e lança a janela
+      setTimeout(() => {
+        const parsedField = ZFullFieldSchema.parse(unsignedSignatureField);
+
+        // Dispara a mesma exata função que o clique do mouse dispararia
+        handleSignatureFieldClick({
+          field: parsedField as any,
+          fullName,
+          signature,
+          typedSignatureEnabled: envelope.documentMeta.typedSignatureEnabled,
+          uploadSignatureEnabled: envelope.documentMeta.uploadSignatureEnabled,
+          drawSignatureEnabled: envelope.documentMeta.drawSignatureEnabled,
+        })
+          .then(async (payload) => {
+            // Se o cidadão desenhou e confirmou, nós salvamos a assinatura igual o sistema faria
+            if (payload) {
+              if (payload.value) {
+                void executeActionAuthProcedure({
+                  onReauthFormSubmit: async (authOptions) => {
+                    await signField(parsedField.id, payload, authOptions);
+                  },
+                  actionTarget: parsedField.type,
+                });
+                setSignature(payload.value);
+              } else {
+                await signField(parsedField.id, payload);
+              }
+            }
+          })
+          .catch(console.error);
+      }, 800);
+    }
+  }, [
+    localPageFields,
+    fullName,
+    signature,
+    envelope.documentMeta,
+    executeActionAuthProcedure,
+    setSignature,
+  ]);
+  // --- FIM DO HACK ---
   if (!currentEnvelopeItem) {
     return null;
   }
