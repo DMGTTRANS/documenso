@@ -230,23 +230,29 @@ export const DocumentSigningSignatureField = ({
     return () => resizeObserver.disconnect();
   }, [signature?.typedSignature]);
 
-  // --- INÍCIO DO HACK DE AUTO-ABRIR DO QUIOSQUE ---
-  const hasAutoOpened = useRef(false);
-
+  // --- INÍCIO DO HACK DE AUTO-ABRIR DO QUIOSQUE (VERSÃO TRATOR) ---
   useEffect(() => {
-    // Se o campo estiver vazio, não tiver assinatura prévia e ainda não tentamos abrir...
-    if (state === 'empty' && !providedSignature && !hasAutoOpened.current) {
-      hasAutoOpened.current = true; // Marca que já abrimos para não prender o cidadão num loop
-
-      // Espera meio segundo (500ms) para garantir que o PDF no fundo já carregou lisinho
-      const timer = setTimeout(() => {
+    // Usamos uma variável global no navegador para garantir que só abra 1 vez
+    // mesmo que o sistema tente recarregar o componente nos bastidores
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (state === 'empty' && !providedSignature && !(window as any).__kioskModalOpened) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).__kioskModalOpened = true;
+      
+      // Tenta forçar a abertura a cada 1 segundo
+      const interval = setInterval(() => {
         setShowSignatureModal(true);
-      }, 500);
+        
+        // Verifica se a tela preta (o dialog) finalmente apareceu no HTML
+        const modalAberto = document.querySelector('[role="dialog"]');
+        if (modalAberto) {
+          clearInterval(interval); // Missão cumprida, desliga o loop
+        }
+      }, 1000); 
 
-      return () => clearTimeout(timer);
+      return () => clearInterval(interval);
     }
   }, [state, providedSignature]);
-
   // --- FIM DO HACK ---
 
   return (
