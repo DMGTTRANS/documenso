@@ -42,6 +42,8 @@ export const SignFieldSignatureDialog = createCallable<
         <DialogContent
           position="center"
           className="w-[95vw] max-w-4xl sm:max-w-4xl [&>button]:hidden"
+          onInteractOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
         >
           <div>
             <DialogHeader>
