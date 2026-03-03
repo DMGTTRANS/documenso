@@ -96,7 +96,7 @@ export default function EnvelopeSignerForm() {
   return (
     <fieldset disabled={isSubmitting} className="flex flex-1 flex-col gap-4">
       <div className="flex flex-1 flex-col gap-y-4">
-        <div>
+        <div className="hidden">
           <Label htmlFor="full-name">
             <Trans>Full Name</Trans>
           </Label>

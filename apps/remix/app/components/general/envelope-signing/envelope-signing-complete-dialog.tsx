@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { useLingui } from '@lingui/react/macro';
 import { FieldType } from '@prisma/client';
@@ -206,6 +206,26 @@ export const EnvelopeSignerCompleteDialog = () => {
       throw err;
     }
   };
+  // --- INÍCIO DO HACK DO AUTO-CONCLUIR QUIOSQUE ---
+  const hasAutoCompleted = useRef(false);
+
+  useEffect(() => {
+    // Se a contagem de campos restantes for ZERO e ainda não completamos...
+    if (recipientFieldsRemaining.length === 0 && !hasAutoCompleted.current) {
+      hasAutoCompleted.current = true;
+
+      // Espera 1 segundinho para o cidadão ver que o campo verde ficou assinado no PDF
+      setTimeout(() => {
+        // Dispara a função final direto pro servidor, pulando a janela de confirmação!
+        if (isDirectTemplate) {
+          handleDirectTemplateCompleteClick().catch(console.error);
+        } else {
+          handleOnCompleteClick().catch(console.error);
+        }
+      }, 1000);
+    }
+  }, [recipientFieldsRemaining.length, isDirectTemplate]);
+  // --- FIM DO HACK ---
 
   const recipientPayload = useMemo(() => {
     if (!isDirectTemplate) {
