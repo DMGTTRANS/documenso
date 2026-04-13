@@ -12,12 +12,6 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
 
   return (
     <Section>
-      {isDocument && !branding.brandingHidePoweredBy && (
-        <Text className="my-4 text-base text-slate-400">
-          <Trans>
-          </Trans>
-        </Text>
-      )}
 
       {branding.brandingEnabled && branding.brandingCompanyDetails && (
         <Text className="my-8 text-sm text-slate-400">
