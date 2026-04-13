@@ -109,7 +109,7 @@ export const DocumentInviteEmailTemplate = ({
                   <TemplateCustomMessageBody text={customBody} />
                 ) : (
                   <Trans>
-                    {inviterName} solicitou a sua assinatura no documento "{documentName}".
+                    {inviterName} solicitou a sua assinatura no documento &quot;{documentName}&quot;.
                   </Trans>
                 )}
               </Text>
