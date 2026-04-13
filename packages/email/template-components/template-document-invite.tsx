@@ -46,7 +46,7 @@ export const TemplateDocumentInvite = ({
             .with({ selfSigner: true }, () => (
               <Trans>
                 Por favor, assine seu documento
-                <br />"{documentName}"
+                <br />&quot;{documentName}&quot;
               </Trans>
             ))
             .with(
@@ -57,21 +57,21 @@ export const TemplateDocumentInvite = ({
               },
               () => (
                 <Trans>
-                  {inviterName} em nome da Equipe "{teamName}" solicitou a sua assinatura no Documento
-                  <br />"{documentName}"
+                  {inviterName} em nome da Equipe &quot;{teamName}&quot; solicitou a sua assinatura no Documento
+                  <br />&quot;{documentName}&quot;
                 </Trans>
               ),
             )
             .with({ organisationType: OrganisationType.ORGANISATION, teamName: P.string }, () => (
               <Trans>
                 {teamName} solicitou a sua assinatura no documento
-                <br />"{documentName}"
+                <br />&quot;{documentName}&quot;
               </Trans>
             ))
             .otherwise(() => (
               <Trans>
                 {inviterName} solicitou a sua assinatura no documento
-                <br />"{documentName}"
+                <br />&quot;{documentName}&quot;
               </Trans>
             ))}
         </Text>
