@@ -41,16 +41,16 @@ export const DocumentInviteEmailTemplate = ({
 
   const action = _(RECIPIENT_ROLES_DESCRIPTION[role].actionVerb).toLowerCase();
 
-  let previewText = msg`${inviterName} has invited you to ${action} ${documentName}`;
+  let previewText = msg`${inviterName} solicitou sua assinatura no documento ${documentName}`;
 
   if (organisationType === OrganisationType.ORGANISATION) {
     previewText = includeSenderDetails
-      ? msg`${inviterName} on behalf of "${teamName}" has invited you to ${action} ${documentName}`
-      : msg`${teamName} has invited you to ${action} ${documentName}`;
+      ? msg`${inviterName} em nome da Organização "${teamName}" solicitou sua assinatura no documento ${documentName}`
+      : msg`${teamName} solicitou sua assinatura no documento ${documentName}`;
   }
 
   if (selfSigner) {
-    previewText = msg`Please ${action} your document ${documentName}`;
+    previewText = msg`Por favor, assine seu documento ${documentName}`;
   }
 
   const getAssetUrl = (path: string) => {
@@ -71,7 +71,7 @@ export const DocumentInviteEmailTemplate = ({
               ) : (
                 <Img
                   src={getAssetUrl('/logo-orgao.png')}
-                  alt="Documenso Logo"
+                  alt="Logo"
                   className="mb-4 h-6"
                 />
               )}
@@ -109,7 +109,7 @@ export const DocumentInviteEmailTemplate = ({
                   <TemplateCustomMessageBody text={customBody} />
                 ) : (
                   <Trans>
-                    {inviterName} has invited you to {action} the document "{documentName}".
+                    {inviterName} solicitou a sua assinatura no documento "{documentName}".
                   </Trans>
                 )}
               </Text>
