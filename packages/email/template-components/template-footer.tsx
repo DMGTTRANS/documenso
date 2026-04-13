@@ -15,11 +15,6 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
       {isDocument && !branding.brandingHidePoweredBy && (
         <Text className="my-4 text-base text-slate-400">
           <Trans>
-            This document was sent using{' '}
-            <Link className="text-[#7AC455]" href="https://documen.so/mail-footer">
-              Documenso
-            </Link>
-            .
           </Trans>
         </Text>
       )}
@@ -39,9 +34,7 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
 
       {!branding.brandingEnabled && (
         <Text className="my-8 text-sm text-slate-400">
-          Documenso, Inc.
-          <br />
-          2261 Market Street, #5211, San Francisco, CA 94114, USA
+          Essa mensagem do DEPARTAMENTO MUNICIPAL DE TRÂNSITO E TRANSPORTES DE GRAVATÁ, é enviada exclusivamente ao destinatário informado e pode conter dados pessoais, protegidos pela Lei Geral de Proteção de Dados (Lei 13.709/2018), assim como informações confidenciais, protegidas por sigilo profissional. O DMGTTRANS ressalta seu comprometimento em assegurar a segurança e a proteção das informações contidas neste e-mail e informa que a sua utilização desautorizada é ilegal e sujeita o infrator às penas da lei. Se você o recebeu indevidamente, queira, por gentileza, reenviá-lo ao emitente, esclarecendo o equívoco.
         </Text>
       )}
     </Section>
